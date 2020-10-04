@@ -80,7 +80,6 @@ public class TestBase {
             //capture the exception and put inside the report
             extentLogger.fail(result.getThrowable());
 
-
         }
         Thread.sleep(2000);
         Driver.closeDriver();
