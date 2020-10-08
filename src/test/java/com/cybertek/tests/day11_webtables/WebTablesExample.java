@@ -14,6 +14,7 @@ import java.util.concurrent.TimeUnit;
 
 public class WebTablesExample {
 
+
     WebDriver driver;
 
     @BeforeMethod
@@ -30,7 +31,7 @@ public class WebTablesExample {
         driver.quit();
     }
 
-    @org.junit.Test
+    @Test
     public void printTable(){
         WebElement table = driver.findElement(By.xpath("//table[@id='table1']"));
 
@@ -88,9 +89,73 @@ public class WebTablesExample {
 
     @Test
     public void getAllCellInOneRow(){
+        List<WebElement> allCellsInOneRow = driver.findElements(By.xpath("//table[@id='table1']/tbody/tr[3]/td"));
+
+        for (WebElement element : allCellsInOneRow) {
+            System.out.println(element.getText());
+        }
+    }
+
+
+    @Test
+    public void getASingleCellByIndex(){
+        WebElement singleCell = driver.findElement(By.xpath("//table[@id='table1']/tbody/tr[3]/td[5]"));
+        System.out.println("singleCell.getText() = " + singleCell.getText());
+
+    }
+
+    @Test
+    public void printAllCellsByIndex(){
+
+        int rowNumber = getNumberOfRows();
+        int colNumber = getNumberOfColumns();
+
+        System.out.println("colNumber = " + colNumber);
+        System.out.println("rowNumber = " + rowNumber);
+
+        //iterate through each row on the table
+        for (int i = 1; i <= rowNumber; i++) {
+
+            //iterate through each cell in the row
+            for (int j = 1; j <= colNumber; j++) {
+
+                String cellXpath = "//table[@id='table1']/tbody/tr["+i+"]/td["+j+"]";
+                System.out.println(cellXpath);
+
+                WebElement cell = driver.findElement(By.xpath(cellXpath));
+                System.out.println(cell.getText());
+
+            }
+
+        }
+
+    }
+
+    @Test
+    public void getCellInRelationToAnotherCellInSameRow(){
+
+        String firstName="Jason";
+
+        String xpath ="//table[@id='table1']//td[.='"+firstName+"']/../td[3]";
+        WebElement email = driver.findElement(By.xpath(xpath));
+        System.out.println(email.getText());
 
 
     }
+
+
+    private int getNumberOfColumns() {
+        List<WebElement> headers = driver.findElements(By.xpath("//table[@id='table1']//th"));
+        return  headers.size();
+    }
+
+    private int getNumberOfRows() {
+        List<WebElement> allRowsWithoutHeader = driver.findElements(By.xpath("//table[@id='table1']/tbody/tr"));
+        return  allRowsWithoutHeader.size();
+    }
+
+
+
 
 
 }
