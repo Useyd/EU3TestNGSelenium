@@ -4,26 +4,25 @@ import com.cybertek.utilities.WebDriverFactory;
 import org.openqa.selenium.By;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
-import org.testng.Assert;
 import org.testng.annotations.AfterMethod;
 import org.testng.annotations.BeforeMethod;
 import org.testng.annotations.Test;
 
 public class iFrameTest {
 
+
     WebDriver driver;
 
     @BeforeMethod
-    public void setUp() {
+    public void setUp(){
         driver = WebDriverFactory.getDriver("chrome");
     }
 
     @AfterMethod
     public void tearDown() throws InterruptedException {
-        Thread.sleep(3000);
+        Thread.sleep(2000);
         driver.quit();
     }
-
 
     @Test
     public void test1() throws InterruptedException {
@@ -69,6 +68,30 @@ public class iFrameTest {
     @Test
     public void test2(){
         driver.get("http://practice.cybertekschool.com/nested_frames");
+
+        //switching to frame top
+        driver.switchTo().frame("frame-top");
+        //top has 3 frame under left middle and right
+        //switch to frame middle
+        driver.switchTo().frame("frame-middle");
+
+        System.out.println(driver.findElement(By.id("content")).getText());
+
+        //goes back to top frame
+        driver.switchTo().parentFrame();
+
+        //switching right with index
+        driver.switchTo().frame(2);
+
+        System.out.println(driver.findElement(By.tagName("body")).getText());
+
+        //go to main html to switch bottom
+        driver.switchTo().defaultContent();
+
+        driver.switchTo().frame(1);
+
+        System.out.println(driver.findElement(By.tagName("body")).getText());
+
 
     }
 
